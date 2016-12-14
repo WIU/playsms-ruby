@@ -14,7 +14,6 @@ need a PlaySMS system setup.
 * [Coverage](#api-coverage)
 * [License](#license)
 
-
 Installation
 ------------
 
