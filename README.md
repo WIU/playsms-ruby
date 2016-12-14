@@ -51,7 +51,7 @@ environment variables instead of specifying the key and secret explicitly.
 ```ruby
 response = client.send_message(to: 'YOUR NUMBER', msg: 'Hello world')
 
-if response['data'][0]['status'] == 'OK'
+unless response['data'].nil? || response['data'][0]['status'] != 'OK'
   puts "Sent message #{response['data'][0]['smslog_id']}"
 else
   puts "Error: #{response['error_string']}"
