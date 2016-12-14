@@ -1,7 +1,4 @@
-require 'minitest/autorun'
-require 'webmock/minitest'
-require 'webmock/rspec'
-require 'playsms'
+require 'spec_helper'
 
 describe 'Playsms::Client' do
   before do
