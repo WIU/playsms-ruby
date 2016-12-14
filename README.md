@@ -11,9 +11,6 @@ need a PlaySMS system setup.
 * [Installation](#installation)
 * [Usage](#usage)
 * [SMS API](#sms-api)
-* [Voice API](#voice-api)
-* [Verify API](#verify-api)
-* [Application API](#application-api)
 * [Coverage](#api-coverage)
 * [License](#license)
 
