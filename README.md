@@ -41,7 +41,7 @@ Then construct a client object with your user and secret:
 client = Playsms::Client.new(user: 'YOUR-API-USER', secret: 'YOUR-API-SECRET')
 ```
 
-For production you can specify the `PLAYSMS_API_USER` and `PLAYSMS_API_SECRET`
+For production you can specify the `PLAYSMS_USER` and `PLAYSMS_SECRET`
 environment variables instead of specifying the key and secret explicitly.
 
 ## SMS API
@@ -51,10 +51,10 @@ environment variables instead of specifying the key and secret explicitly.
 ```ruby
 response = client.send_message(to: 'YOUR NUMBER', msg: 'Hello world')
 
-if response['messages'][0]['status'] == '0'
-  puts "Sent message #{response['messages'][0]['message-id']}"
+if response['data'][0]['status'] == 'OK'
+  puts "Sent message #{response['data'][0]['smslog_id']}"
 else
-  puts "Error: #{response['messages'][0]['error-text']}"
+  puts "Error: #{response['error_string']}"
 end
 ```
 

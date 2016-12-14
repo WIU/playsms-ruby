@@ -12,68 +12,44 @@ module Playsms
     attr_accessor :user, :secret
 
     def initialize(options = {})
-      @user = options.fetch(:key) { ENV.fetch('PLAYSMS_API_USER') }
-      @secret = options.fetch(:secret) { ENV.fetch('PLAYSMS_API_SECRET') }
+      @user = options.fetch(:user) { ENV.fetch('PLAYSMS_USER') }
+      @secret = options.fetch(:secret) { ENV.fetch('PLAYSMS_SECRET') }
       @host = options.fetch(:host) { 'http://playsms.example.com' }
       @user_agent = "playsms-ruby/#{VERSION} ruby/#{RUBY_VERSION}"
     end
 
     def send_message(params)
-      post(@host, '/index.php?app=ws&op=pv' + Params.encode(params))
+      post(@host, '/index.php?app=ws&op=pv&', params)
     end
-
-    # def get_balance
-    #   get(@host, '/account/get-balance')
-    # end
-    #
-    # def update_settings(params)
-    #   post(@host, '/account/settings', params)
-    # end
-    #
-    # def get_message(id)
-    #   get(@host, '/search/message', id: id)
-    # end
-    #
-    # def get_message_rejections(params)
-    #   get(@host, '/search/rejections', params)
-    # end
-    #
-    # def search_messages(params)
-    #   get(@host, '/search/messages', Hash === params ? params : {ids: Array(params)})
-    # end
 
     private
 
     def get(host, request_uri, params = {})
-      uri = URI(host + request_uri)
-      uri.query = Params.encode(params.merge(u: @user, h: @secret))
+      uri = URI(host + request_uri + Params.encode(params.merge(u: @user, h: @secret)))
 
       message = Net::HTTP::Get.new(uri.request_uri)
 
       request(uri, message)
     end
 
-    def post(host, request_uri)
-      uri = URI(host + request_uri)
+    def post(host, request_uri, params)
+      uri = URI(host + request_uri + Params.encode(params.merge(u: @user, h: @secret)))
 
       message = Net::HTTP::Post.new(uri.request_uri)
-      # message.form_data = params.merge(u: @user, h: @secret)
 
       request(uri, message)
     end
 
     def put(host, request_uri, params)
-      uri = URI(host + request_uri)
+      uri = URI(host + request_uri + Params.encode(params.merge(u: @user, h: @secret)))
 
       message = Net::HTTP::Put.new(uri.request_uri)
-      message.form_data = params.merge(u: @user, h: @secret)
 
       request(uri, message)
     end
 
     def delete(host, request_uri)
-      uri = URI(host + request_uri)
-      uri.query = Params.encode(u: @user, h: @secret)
+      uri = URI(host + request_uri + Params.encode(params.merge(u: @user, h: @secret)))
 
       message = Net::HTTP::Delete.new(uri.request_uri)
 
@@ -81,8 +57,7 @@ module Playsms
     end
 
     def request(uri, message)
-      http = Net::HTTP.new(uri.host, Net::HTTP.https_default_port)
-      http.use_ssl = true
+      http = Net::HTTP.new(uri.host, Net::HTTP.http_default_port)
 
       message['User-Agent'] = @user_agent
 
